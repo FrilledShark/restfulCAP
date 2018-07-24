@@ -24,6 +24,7 @@ class Domain(BaseModel):
 # Tables
 #
 
+
 class User(BaseModel):
     domain = ForeignKeyField(Domain, backref="users")
     username = CharField(unique=True)
@@ -37,7 +38,6 @@ class Coin(BaseModel):
 
 
 tables = [User, Coin, Domain]
-
 
 if __name__ == "__main__":
     db.create_tables(tables)
