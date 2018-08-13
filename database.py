@@ -13,31 +13,34 @@ class BaseModel(Model):
         database = db
 
 
-# Used for domain control
-class Domain(BaseModel):
-    domain = CharField(unique=True)
-    password = CharField()
-    date = DateTimeField(null=True)
-
-
 #
 # Tables
 #
 
 
-class User(BaseModel):
-    domain = ForeignKeyField(Domain, backref="users")
-    username = CharField(unique=True)
+class Domain(BaseModel):
+    domain = CharField(unique=True)
     password = CharField()
 
+    date = DateTimeField(null=True)
 
-class Coin(BaseModel):
-    user = ForeignKeyField(User, backref="coins")
-    coin = CharField()
+
+class User(BaseModel):
+    domain = ForeignKeyField(Domain, backref="users")
+    password = CharField()
+
+    # Extensions
+    alias = CharField(unique=True)
+    date = DateTimeField(null=True)
+
+
+class Type(BaseModel):
+    address_type = IntegerField()
+    user = ForeignKeyField(User, backref="types")
     address = CharField(null=True)
 
 
-tables = [User, Coin, Domain]
+tables = [Domain, User, Type]
 
 if __name__ == "__main__":
     db.create_tables(tables)
